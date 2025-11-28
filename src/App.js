@@ -1,4 +1,5 @@
 import './App.css';
+import React from "react"
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
@@ -14,8 +15,9 @@ const BenefitsSection = lazy(() => import('./homepagecomponents/benefits-section
 const SectorsSection = lazy(() => import('./homepagecomponents/sector-section'));
 const EventsGallery = lazy(() => import('./homepagecomponents/events-gallery'));
 const PartnersSection = lazy(() => import('./homepagecomponents/partner-section'));
-const YouthRegistration = lazy(() => import("./homepagecomponents/YouthRegistration"));
-const YouthForm = lazy(() => import("./homepagecomponents/youthform/YouthForm"));
+const YouthRegistration = lazy(() => import("./registration/YouthRegistration"));
+const YouthForm = lazy(() => import("./youthform/YouthForm"));
+const SetPassword = lazy(() => import("./homepagecomponents/SetPassword"));
 
 // Loading spinner component
 const LoadingSpinner = () => (
@@ -48,6 +50,7 @@ const LayoutWrapper = ({ children }) => {
   // Routes where header should be hidden
   const hideHeaderRoutes = [
     '/youth-registration',
+    '/set-password',
     '/youth-form',
     '/mobile-verification',
     '/otp-verification',
@@ -79,6 +82,7 @@ function App() {
             
             {/* Registration routes (without header) */}
             <Route path="/youth-registration" element={<YouthRegistration />} />
+            <Route path="/set-password" element={<SetPassword />} />
             <Route path="/youth-form" element={<YouthForm />} />
             
             {/* 404 Not Found route */}

@@ -1,5 +1,6 @@
 // src/homepagecomponents/registration/RegistrationForm.jsx
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import ProgressBar from "./progressBar";
 import Step1Personal from "./Step1Personal";
 import Step2Address from "./Step2Address";
@@ -104,32 +105,52 @@ export default function RegistrationForm() {
   const back = () => setStep((s) => Math.max(1, s - 1));
 
   // final submit example
-  const handleSubmit = async () => {
-    // Basic validation before submit (you can add more)
-    if (!form.fullname || !form.mobile) {
-      alert("Please fill required personal fields before submitting.");
-      return;
+
+const handleSubmit = async () => {
+  // Basic validation
+  if (!form.fullname || !form.mobile) {
+    alert("Please fill required personal fields before submitting.");
+    return;
+  }
+
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/youth/submit",
+      form,
+      {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("auth_token"),
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    console.log("Submit Response:", response.data);
+
+    if (response.data.success) {
+      alert("Registration submitted successfully ✔");
+
+      // Clear saved form data
+      localStorage.removeItem(STORAGE_KEY);
+
+      // You can redirect or reset form here
+      // navigate("/success"); or setForm({})
+    } else {
+      alert("Submit failed: " + (response.data.error || "Unknown error"));
     }
 
-    try {
-      const res = await fetch("http://localhost:5000/api/youth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
-      });
-      const data = await res.json();
-      if (res.ok) {
-        alert("Registration submitted successfully ✔");
-        localStorage.removeItem(STORAGE_KEY);
-        // reset or navigate as needed
-      } else {
-        alert("Submit failed: " + (data.error || JSON.stringify(data)));
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Network error: " + err.message);
+  } catch (error) {
+    console.error("Submit Error:", error);
+
+    if (error.response) {
+      // Server responded with error
+      alert("Submit failed: " + (error.response.data.error || "Server error"));
+    } else {
+      alert("Network error: " + error.message);
     }
-  };
+  }
+};
+
 
   // decorative background (use your uploaded screenshot path)
   const bgStyle = {
