@@ -1,13 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Lock, CheckCircle } from "lucide-react";
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations/translations";
 
-export default function SetPassword({ mobile, onSuccess }) {
+export default function SetPassword({ mobile: mobileProp, onSuccess }) {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
+  const [mobile, setMobile] = useState(mobileProp);
+  const navigate = useNavigate();
+  const { language } = useLanguage();
+  const t = translations[language].setPassword;
+
+  useEffect(() => {
+    // If mobile not passed as prop, get it from localStorage
+    if (!mobileProp) {
+      const storedMobile = localStorage.getItem("otp_mobile");
+      if (storedMobile) {
+        setMobile(storedMobile);
+        console.log("Retrieved mobile from localStorage:", storedMobile);
+      } else {
+        alert("No mobile number found. Please start from registration.");
+        navigate("/youth-registration");
+      }
+    }
+  }, [mobileProp, navigate]);
 
   const submit = async () => {
+    if (!mobile) {
+      alert("Mobile number is missing. Please restart registration.");
+      navigate("/youth-registration");
+      return;
+    }
+
     if (password.length < 6) {
       alert("Password must be at least 6 characters.");
       return;
@@ -20,15 +47,31 @@ export default function SetPassword({ mobile, onSuccess }) {
     try {
       setLoading(true);
 
-      const res = await axios.post("http://localhost:5000/api/auth/create-password", {
-        mobile,
-        password,
-      });
+      // Debug: log payload to verify values being sent
+      const payload = { mobile, password };
+      console.log("SetPassword sending payload:", payload);
 
-      onSuccess(res.data.token);
-      alert("Password set successfully!");
+      const res = await axios.post("http://localhost:5000/api/auth/create-password", payload);
+
+      console.log("create-password response:", res.data);
+
+      // Clear the stored mobile number
+      localStorage.removeItem("otp_mobile");
+
+      // Store token
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+      }
+
+      if (onSuccess) {
+        onSuccess(res.data.token);
+      } else {
+        alert("Password set successfully!");
+        navigate("/youth-form");
+      }
     } catch (err) {
-      alert(err.response?.data?.message || "Error setting password");
+      console.error("create-password error:", err.response || err);
+      alert(err.response?.data?.message || err.message || "Error setting password");
     } finally {
       setLoading(false);
     }
@@ -48,21 +91,21 @@ export default function SetPassword({ mobile, onSuccess }) {
             <Lock className="text-white" size={32} />
           </div>
           <h2 className="text-3xl mt-4 font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-            Set Your Password
+            {t.title}
           </h2>
-          <p className="text-gray-500 text-sm mt-1">Secure your PM Internship account</p>
+          <p className="text-gray-500 text-sm mt-1">{t.subtitle}</p>
         </div>
 
         {/* Password Inputs */}
         <div className="space-y-5 relative z-10">
           <div>
-            <label className="font-semibold text-gray-700 mb-1 block">New Password</label>
+            <label className="font-semibold text-gray-700 mb-1 block">{t.newPassword}</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               <input
                 type="password"
                 value={password}
-                placeholder="Enter new password"
+                placeholder={t.passwordPlaceholder}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-10 p-3 border-2 rounded-xl focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition placeholder-gray-400 bg-white/70 backdrop-blur-sm"
               />
@@ -70,13 +113,13 @@ export default function SetPassword({ mobile, onSuccess }) {
           </div>
 
           <div>
-            <label className="font-semibold text-gray-700 mb-1 block">Confirm Password</label>
+            <label className="font-semibold text-gray-700 mb-1 block">{t.confirmPassword}</label>
             <div className="relative">
               <CheckCircle className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               <input
                 type="password"
                 value={confirm}
-                placeholder="Confirm password"
+                placeholder={t.confirmPlaceholder}
                 onChange={(e) => setConfirm(e.target.value)}
                 className="w-full pl-10 p-3 border-2 rounded-xl focus:border-orange-500 focus:ring-4 focus:ring-orange-100 transition placeholder-gray-400 bg-white/70 backdrop-blur-sm"
               />
@@ -89,12 +132,12 @@ export default function SetPassword({ mobile, onSuccess }) {
           onClick={submit}
           disabled={loading}
           className={`w-full mt-8 py-3 rounded-xl font-bold text-white shadow-lg transition-all text-lg
-            ${loading 
-              ? "bg-gray-400 cursor-not-allowed" 
+            ${loading
+              ? "bg-gray-400 cursor-not-allowed"
               : "bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 transform hover:scale-105"} 
           `}
         >
-          {loading ? "Saving..." : "Set Password"}
+          {loading ? t.saving : t.setPassword}
         </button>
       </div>
     </div>

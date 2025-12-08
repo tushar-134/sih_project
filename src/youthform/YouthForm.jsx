@@ -8,12 +8,16 @@ import Step3Education from "./Step3Education"
 import Step4Skills from "./step4skills"
 import Step5docu from "./Step5docu"
 import Step6Review from "./Step6review";
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations/translations";
 
 const STORAGE_KEY = "youth_reg_v3";
 
 export default function RegistrationForm() {
   const [step, setStep] = useState(1);
   const [saving, setSaving] = useState(false);
+  const { language } = useLanguage();
+  const t = translations[language].youthForm;
 
   const [form, setForm] = useState({
     // Personal
@@ -103,53 +107,54 @@ export default function RegistrationForm() {
 
   const next = () => setStep((s) => Math.min(6, s + 1));
   const back = () => setStep((s) => Math.max(1, s - 1));
+  const goTo = (stepNumber) => setStep(Math.max(1, Math.min(6, stepNumber)));
 
   // final submit example
 
-const handleSubmit = async () => {
-  // Basic validation
-  if (!form.fullname || !form.mobile) {
-    alert("Please fill required personal fields before submitting.");
-    return;
-  }
+  const handleSubmit = async () => {
+    // Basic validation
+    if (!form.fullname || !form.mobile) {
+      alert("Please fill required personal fields before submitting.");
+      return;
+    }
 
-  try {
-    const response = await axios.post(
-      "http://localhost:5000/api/youth/submit",
-      form,
-      {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("auth_token"),
-          "Content-Type": "application/json"
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/youth/submit",
+        form,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("auth_token"),
+            "Content-Type": "application/json"
+          }
         }
+      );
+
+      console.log("Submit Response:", response.data);
+
+      if (response.data.success) {
+        alert("Registration submitted successfully ✔");
+
+        // Clear saved form data
+        localStorage.removeItem(STORAGE_KEY);
+
+        // You can redirect or reset form here
+        // navigate("/success"); or setForm({})
+      } else {
+        alert("Submit failed: " + (response.data.error || "Unknown error"));
       }
-    );
 
-    console.log("Submit Response:", response.data);
+    } catch (error) {
+      console.error("Submit Error:", error);
 
-    if (response.data.success) {
-      alert("Registration submitted successfully ✔");
-
-      // Clear saved form data
-      localStorage.removeItem(STORAGE_KEY);
-
-      // You can redirect or reset form here
-      // navigate("/success"); or setForm({})
-    } else {
-      alert("Submit failed: " + (response.data.error || "Unknown error"));
+      if (error.response) {
+        // Server responded with error
+        alert("Submit failed: " + (error.response.data.error || "Server error"));
+      } else {
+        alert("Network error: " + error.message);
+      }
     }
-
-  } catch (error) {
-    console.error("Submit Error:", error);
-
-    if (error.response) {
-      // Server responded with error
-      alert("Submit failed: " + (error.response.data.error || "Server error"));
-    } else {
-      alert("Network error: " + error.message);
-    }
-  }
-};
+  };
 
 
   // decorative background (use your uploaded screenshot path)
@@ -164,10 +169,10 @@ const handleSubmit = async () => {
       <div className="max-w-6xl mx-auto bg-white/85 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden">
         <div className="px-8 py-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Youth Registration</h2>
+            <h2 className="text-2xl font-bold">{t.title}</h2>
             <div className="text-sm text-gray-600">
-              <span className="mr-3">Step {step} of 2</span>
-              <span>{saving ? "Saving..." : "Saved"}</span>
+              <span className="mr-3">{t.step} {step} {t.of} 6</span>
+              <span>{saving ? t.saving : t.saved}</span>
             </div>
           </div>
 
@@ -187,7 +192,7 @@ const handleSubmit = async () => {
                 next={next}
               />
             )}
-             {step === 3 && (
+            {step === 3 && (
               <Step3Education
                 data={form}
                 update={update}
@@ -195,7 +200,7 @@ const handleSubmit = async () => {
                 next={next}
               />
             )}
-             {step === 4 && (
+            {step === 4 && (
               <Step4Skills
                 data={form}
                 update={update}
@@ -211,12 +216,13 @@ const handleSubmit = async () => {
                 next={next}
               />
             )}
-             {step === 6 && (
+            {step === 6 && (
               <Step6Review
                 data={form}
                 update={update}
                 back={back}
-                submit={handleSubmit}
+                onSubmit={handleSubmit}
+                goTo={goTo}
               />
             )}
           </div>

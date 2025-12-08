@@ -1,6 +1,8 @@
 // src/homepagecomponents/registration/steps/Step4Documents.jsx
 import React, { useState } from "react";
 import { Plus, Trash2, UploadCloud } from "lucide-react";
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations/translations";
 
 // Convert file to Base64
 function toBase64(file) {
@@ -13,6 +15,9 @@ function toBase64(file) {
 }
 
 export default function Step4Documents({ data, update, next, back }) {
+  const { language } = useLanguage();
+  const t = translations[language].step5Documents;
+  const tCommon = translations[language].youthForm;
   const [exp, setExp] = useState({
     company: "",
     role: "",
@@ -59,16 +64,16 @@ export default function Step4Documents({ data, update, next, back }) {
 
   return (
     <div className="bg-white rounded-2xl p-6 shadow-md">
-      <h3 className="text-xl font-semibold mb-6">Documents & Experience</h3>
+      <h3 className="text-xl font-semibold mb-6">{t.title}</h3>
 
       {/* ---------- AADHAR CARD UPLOAD ---------- */}
       <div className="mb-6">
-        <label className="font-semibold">Aadhar Card (PDF / JPG / PNG)</label>
+        <label className="font-semibold">{t.uploadAadhar} (PDF / JPG / PNG)</label>
 
         <div className="flex items-center gap-4 mt-2">
           <label className="flex items-center gap-3 bg-gray-100 px-4 py-2 rounded-xl cursor-pointer hover:bg-gray-200">
             <UploadCloud size={20} />
-            <span>Upload Aadhar</span>
+            <span>{t.uploadAadhar}</span>
             <input
               type="file"
               className="hidden"
@@ -87,12 +92,12 @@ export default function Step4Documents({ data, update, next, back }) {
 
       {/* ---------- PASSPORT PHOTO UPLOAD ---------- */}
       <div className="mb-8">
-        <label className="font-semibold">Passport-size Photo (JPG / PNG)</label>
+        <label className="font-semibold">{t.uploadPhoto} (JPG / PNG)</label>
 
         <div className="flex items-center gap-4 mt-2">
           <label className="flex items-center gap-3 bg-gray-100 px-4 py-2 rounded-xl cursor-pointer hover:bg-gray-200">
             <UploadCloud size={20} />
-            <span>Upload Photo</span>
+            <span>{t.uploadPhoto}</span>
             <input
               type="file"
               className="hidden"
@@ -110,14 +115,14 @@ export default function Step4Documents({ data, update, next, back }) {
       </div>
 
       {/* ---------- EXPERIENCE SECTION ---------- */}
-      <h3 className="text-lg font-semibold mb-3">Work Experience (Optional)</h3>
+      <h3 className="text-lg font-semibold mb-3">{t.workExperience} (Optional)</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <input
           name="company"
           value={exp.company}
           onChange={onChange}
-          placeholder="Company Name"
+          placeholder={t.companyPlaceholder}
           className="p-3 border rounded-lg"
         />
 
@@ -125,7 +130,7 @@ export default function Step4Documents({ data, update, next, back }) {
           name="role"
           value={exp.role}
           onChange={onChange}
-          placeholder="Role"
+          placeholder={t.rolePlaceholder}
           className="p-3 border rounded-lg"
         />
 
@@ -133,7 +138,7 @@ export default function Step4Documents({ data, update, next, back }) {
           name="duration"
           value={exp.duration}
           onChange={onChange}
-          placeholder="Duration (Ex: 6 months)"
+          placeholder={t.durationPlaceholder}
           className="p-3 border rounded-lg"
         />
 
@@ -142,7 +147,7 @@ export default function Step4Documents({ data, update, next, back }) {
           value={exp.description}
           onChange={onChange}
           rows="3"
-          placeholder="Work Description (Optional)"
+          placeholder={t.descriptionPlaceholder}
           className="p-3 border rounded-lg md:col-span-3"
         ></textarea>
       </div>
@@ -152,7 +157,7 @@ export default function Step4Documents({ data, update, next, back }) {
           onClick={addExperience}
           className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-3 rounded-xl flex items-center gap-2"
         >
-          <Plus size={18} /> Add Experience
+          <Plus size={18} /> {t.addExperience}
         </button>
       </div>
 
@@ -171,11 +176,11 @@ export default function Step4Documents({ data, update, next, back }) {
               </div>
 
               <ul className="mt-2 text-sm grid grid-cols-1 md:grid-cols-3 gap-2">
-                <li><strong>Company:</strong> {exp.company}</li>
-                <li><strong>Role:</strong> {exp.role}</li>
-                <li><strong>Duration:</strong> {exp.duration}</li>
+                <li><strong>{t.company}:</strong> {exp.company}</li>
+                <li><strong>{t.role}:</strong> {exp.role}</li>
+                <li><strong>{t.duration}:</strong> {exp.duration}</li>
                 <li className="md:col-span-3">
-                  <strong>Description:</strong> {exp.description || "—"}
+                  <strong>{t.description}:</strong> {exp.description || "—"}
                 </li>
               </ul>
             </div>
@@ -186,14 +191,14 @@ export default function Step4Documents({ data, update, next, back }) {
       {/* ---------- NAV BUTTONS ---------- */}
       <div className="flex justify-between mt-10">
         <button onClick={back} className="bg-gray-300 px-6 py-3 rounded-lg">
-          ← Back
+          ← {tCommon.back}
         </button>
 
         <button
           onClick={next}
           className="bg-blue-600 text-white px-6 py-3 rounded-lg"
         >
-          Save & Next →
+          {tCommon.save} & {tCommon.next} →
         </button>
       </div>
     </div>

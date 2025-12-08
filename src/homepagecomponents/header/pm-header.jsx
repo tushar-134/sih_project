@@ -1,33 +1,39 @@
-import React,{useState,useEffect,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Menucard from "./Menu-card";
+import { useLanguage } from "../../contexts/LanguageContext";
+import { translations } from "../../translations/translations";
 
 export default function PMHeader() {
-//state and ref for guidelines menu
-const [openMenu,setOpenMenu]=useState(false);
-const menuRef=useRef();
+  //state and ref for guidelines menu
+  const [openMenu, setOpenMenu] = useState(false);
+  const menuRef = useRef();
 
-//this for scrolling to sections on same page from header
-   const scrollToSection = (id) => {
-  const section = document.getElementById(id);
-  if (section) {
-    section.scrollIntoView({ behavior: "smooth" });
-  } else {
-    console.warn(`Section with ID "${id}" not found`);
-  }
-};
+  // Language context
+  const { language, switchLanguage } = useLanguage();
+  const t = translations[language].header;
 
-//useEffect for closing guidelines menu on outside click 
-useEffect(()=>{
-  const closeMenu=(e)=>{
-    if(menuRef.current && !menuRef.current.contains(e.target)){
-      setOpenMenu(false);
+  //this for scrolling to sections on same page from header
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    } else {
+      console.warn(`Section with ID "${id}" not found`);
     }
   };
-  document.addEventListener("mousedown",closeMenu);
-  return ()=>document.removeEventListener("mousedown",closeMenu);
-})
- 
+
+  //useEffect for closing guidelines menu on outside click 
+  useEffect(() => {
+    const closeMenu = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setOpenMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", closeMenu);
+    return () => document.removeEventListener("mousedown", closeMenu);
+  })
+
   return (
     <header className="w-full">
       {/* Top bar */}
@@ -46,9 +52,13 @@ useEffect(()=>{
 
             <span className="text-gray-400">|</span>
 
-            <select className="bg-gray-900 text-white px-1">
-              <option>English</option>
-              <option>हिंदी</option>
+            <select
+              className="bg-gray-900 text-white px-1 cursor-pointer"
+              value={language}
+              onChange={(e) => switchLanguage(e.target.value)}
+            >
+              <option value="en">English</option>
+              <option value="hi">हिंदी</option>
             </select>
           </div>
         </div>
@@ -61,18 +71,22 @@ useEffect(()=>{
             <div className="w-12 h-12 bg-gray-900 rounded-xl shadow-lg flex items-center justify-center border border-gray-700">
               <span className="text-white text-xs font-bold">MCA</span>
             </div>
-            <div>
-              <h1 className="text-2xl font-extrabold text-orange-500 drop-shadow-sm">PM</h1>
-              <p className="text-xs text-gray-600">Internship</p>
+            <div className="relative">
+              <h1 className="text-3xl font-black bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-lg tracking-tight leading-none">
+                CAREER
+              </h1>
+              <p className="text-sm font-bold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent tracking-widest -mt-1">
+                SETU
+              </p>
+              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-orange-500 via-orange-400 to-transparent"></div>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <Link to="/youth-registration"className="bg-orange-500 text-white px-5 py-2.5 rounded-lg font-semibold shadow-md hover:bg-orange-600 hover:shadow-lg transition-all"
->Youth Registration</Link>
-            <button className="bg-orange-500 text-white px-5 py-2.5 rounded-lg font-semibold shadow-md hover:bg-orange-600 hover:shadow-lg transition-all">
-              Login
-            </button>
+            <Link to="/youth-registration" className="bg-orange-500 text-white px-5 py-2.5 rounded-lg font-semibold shadow-md hover:bg-orange-600 hover:shadow-lg transition-all"
+            >{t.youthRegistration}</Link>
+            <Link to="/login" className="bg-orange-500 text-white px-5 py-2.5 rounded-lg font-semibold shadow-md hover:bg-orange-600 hover:shadow-lg transition-all"
+            >{t.login}</Link>
           </div>
         </div>
 
@@ -81,30 +95,30 @@ useEffect(()=>{
           <div className="max-w-10xl mx-auto px-4 flex gap-8 text-sm font-semibold py-3">
             <Link to="/Home" className="hover:text-orange-400 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-orange-400 after:transition-all hover:after:w-full
  relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-orange-400 after:transition-all 
-hover:after:w-full">HOME</Link>
+hover:after:w-full">{t.home}</Link>
             {/* this is guideline and documentations */}
             <div className="relative" ref={menuRef}>
-            <button
-              className="hover:text-orange-400 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-orange-400 after:transition-all 
+              <button
+                className="hover:text-orange-400 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[2px] after:bg-orange-400 after:transition-all 
 hover:after:w-full
 "
-              onClick={() => setOpenMenu(!openMenu)}
-            >
-              GUIDELINES / DOCUMENTATIONS
-            </button>
+                onClick={() => setOpenMenu(!openMenu)}
+              >
+                {t.guidelines}
+              </button>
 
-            {openMenu && (
-              <div className="absolute top-10 left-0 z-50 bg-white/30 backdrop-blur-xl p-4 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/40 transition-all duration-300
+              {openMenu && (
+                <div className="absolute top-10 left-0 z-50 bg-white/30 backdrop-blur-xl p-4 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/40 transition-all duration-300
 hover:shadow-[0_12px_40px_rgb(0,0,0,0.18)]">
-                <Menucard />
-              </div>
-            )}
-          </div>
+                  <Menucard />
+                </div>
+              )}
+            </div>
             {/* <Link to="/guidelines" className="hover:text-orange-400 relative after:absolute after:left-0 after:bottom-0 
 after:w-0 after:h-[2px] after:bg-orange-400 after:transition-all 
 hover:after:w-full
 ">GUIDELINES/DOCUMENTATIONS</Link> */}
-             {/* <button className="hover:text-orange-400 relative after:absolute after:left-0 after:bottom-0 
+            {/* <button className="hover:text-orange-400 relative after:absolute after:left-0 after:bottom-0 
 after:w-0 after:h-[2px] after:bg-orange-400 after:transition-all 
 hover:after:w-full
 " onClick={scrollToGallery}>GALLERY</button>
@@ -124,15 +138,15 @@ hover:after:w-full
             <button className="hover:text-orange-400 relative after:absolute after:left-0 after:bottom-0 
 after:w-0 after:h-[2px] after:bg-orange-400 after:transition-all 
 hover:after:w-full
-" onClick={() => scrollToSection("gallery")}>GALLERY</button>
+" onClick={() => scrollToSection("gallery")}>{t.gallery}</button>
             <button className="hover:text-orange-400 relative after:absolute after:left-0 after:bottom-0 
 after:w-0 after:h-[2px] after:bg-orange-400 after:transition-all 
 hover:after:w-full
-" onClick={() => scrollToSection("eligibility")}>ELIGIBILITY</button>
+" onClick={() => scrollToSection("eligibility")}>{t.eligibility}</button>
             <button className="hover:text-orange-400 relative after:absolute after:left-0 after:bottom-0 
 after:w-0 after:h-[2px] after:bg-orange-400 after:transition-all 
 hover:after:w-full
-" onClick={() => scrollToSection("support")}>SUPPORT</button>
+" onClick={() => scrollToSection("support")}>{t.support}</button>
           </div>
         </nav>
       </div>
@@ -141,8 +155,7 @@ hover:after:w-full
       <div className="bg-blue-100 text-blue-900 px-4 py-2.5 text-sm border-b border-blue-200 shadow-sm
 ">
         <div className="max-w-10xl mx-auto">
-          Check your dashboard, email, and SMS regularly for updates. Link Aadhaar
-          with Your Bank Account - Now Easier!
+          {t.notification}
         </div>
       </div>
     </header>

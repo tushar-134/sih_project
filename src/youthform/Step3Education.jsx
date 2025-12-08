@@ -1,8 +1,13 @@
 // src/homepagecomponents/registration/steps/Step3Education.jsx
 import React, { useState } from "react";
 import { Trash2 } from "lucide-react";
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations/translations";
 
 export default function Step3Education({ data, update, next, back }) {
+  const { language } = useLanguage();
+  const t = translations[language].step3Education;
+  const tCommon = translations[language].youthForm;
   const [entry, setEntry] = useState({
     qualification: "",
     course: "",
@@ -64,21 +69,21 @@ export default function Step3Education({ data, update, next, back }) {
 
   return (
     <div className="bg-white rounded-2xl p-6 shadow-md">
-      <h3 className="text-xl font-semibold mb-6">Education Details</h3>
+      <h3 className="text-xl font-semibold mb-6">{t.title}</h3>
 
       {/* FORM GRID */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
         {/* Qualification Dropdown */}
         <div>
-          <label className="block text-sm font-semibold mb-1">Qualification *</label>
+          <label className="block text-sm font-semibold mb-1">{t.qualification} *</label>
           <select
             name="qualification"
             value={entry.qualification}
             onChange={onLocalChange}
             className="p-3 w-full border rounded-lg"
           >
-            <option value="">Select qualification</option>
+            <option value="">{t.qualificationPlaceholder}</option>
             <option>10th</option>
             <option>12th</option>
             <option>Diploma</option>
@@ -89,14 +94,14 @@ export default function Step3Education({ data, update, next, back }) {
 
         {/* Course */}
         <div>
-          <label className="block text-sm font-semibold mb-1">Course *</label>
+          <label className="block text-sm font-semibold mb-1">{t.course} *</label>
           <select
             name="course"
             value={entry.course}
             onChange={onLocalChange}
             className="p-3 w-full border rounded-lg"
           >
-            <option value="">Select course</option>
+            <option value="">{t.coursePlaceholder}</option>
             <option>All Subjects</option>
             <option>Science</option>
             <option>Commerce</option>
@@ -108,14 +113,14 @@ export default function Step3Education({ data, update, next, back }) {
 
         {/* Stream */}
         <div>
-          <label className="block text-sm font-semibold mb-1">Stream / Specialization</label>
+          <label className="block text-sm font-semibold mb-1">{t.stream}</label>
           <select
             name="stream"
             value={entry.stream}
             onChange={onLocalChange}
             className="p-3 w-full border rounded-lg"
           >
-            <option value="">Select stream</option>
+            <option value="">{t.streamPlaceholder}</option>
             <option>NA</option>
             <option>PCM</option>
             <option>PCB</option>
@@ -127,41 +132,41 @@ export default function Step3Education({ data, update, next, back }) {
         {/* Board / University */}
         <div>
           <label className="block text-sm font-semibold mb-1">
-            Name of Board / University *
+            {t.board} *
           </label>
           <input
             name="board"
             value={entry.board}
             onChange={onLocalChange}
             className="p-3 w-full border rounded-lg"
-            placeholder="Enter Name of Board"
+            placeholder={t.boardPlaceholder}
           />
         </div>
 
         {/* Institute */}
         <div>
           <label className="block text-sm font-semibold mb-1">
-            Name of Institute *
+            {t.institute} *
           </label>
           <input
             name="institute"
             value={entry.institute}
             onChange={onLocalChange}
             className="p-3 w-full border rounded-lg"
-            placeholder="Enter name of institute"
+            placeholder={t.institutePlaceholder}
           />
         </div>
 
         {/* Year of Passing */}
         <div>
-          <label className="block text-sm font-semibold mb-1">Year of Passing *</label>
+          <label className="block text-sm font-semibold mb-1">{t.passingYear} *</label>
           <select
             name="passingYear"
             value={entry.passingYear}
             onChange={onLocalChange}
             className="p-3 w-full border rounded-lg"
           >
-            <option value="">Select year</option>
+            <option value="">{t.passingYearPlaceholder}</option>
             {Array.from({ length: 30 }, (_, i) => 2025 - i).map((yr) => (
               <option key={yr}>{yr}</option>
             ))}
@@ -170,14 +175,14 @@ export default function Step3Education({ data, update, next, back }) {
 
         {/* Marks Obtained */}
         <div>
-          <label className="block text-sm font-semibold mb-1">Marks Obtained *</label>
+          <label className="block text-sm font-semibold mb-1">{t.marksObtained} *</label>
           <select
             name="marksType"
             value={entry.marksType}
             onChange={onLocalChange}
             className="p-3 w-full border rounded-lg"
           >
-            <option value="">Select score type</option>
+            <option value="">{t.marksTypePlaceholder}</option>
             <option>Percentage</option>
             <option>CGPA</option>
             <option>Grade</option>
@@ -187,20 +192,20 @@ export default function Step3Education({ data, update, next, back }) {
         {/* CGPA / Score */}
         <div>
           <label className="block text-sm font-semibold mb-1">
-            CGPA / Grade / Percentage *
+            {t.score} *
           </label>
           <input
             name="score"
             value={entry.score}
             onChange={onLocalChange}
             className="p-3 w-full border rounded-lg"
-            placeholder="Enter score"
+            placeholder={t.scorePlaceholder}
           />
         </div>
 
         {/* Certificate Upload */}
         <div>
-          <label className="block text-sm font-semibold mb-1">Upload Certificate *</label>
+          <label className="block text-sm font-semibold mb-1">{t.certificate} *</label>
           <input
             type="file"
             accept=".pdf,.png,.jpg,.jpeg"
@@ -209,7 +214,7 @@ export default function Step3Education({ data, update, next, back }) {
             className="p-3 w-full border rounded-lg"
           />
           <p className="text-xs text-gray-500 mt-1">
-            Note: Only PDF or image allowed, upto 7MB
+            {t.certificateNote}
           </p>
         </div>
       </div>
@@ -220,7 +225,7 @@ export default function Step3Education({ data, update, next, back }) {
           onClick={addEntry}
           className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold"
         >
-          Save / Add More
+          {t.saveAddMore}
         </button>
       </div>
 
@@ -230,7 +235,7 @@ export default function Step3Education({ data, update, next, back }) {
           {data.educationList.map((q, index) => (
             <div key={index} className="p-4 border rounded-xl mb-4 bg-gray-50">
               <div className="flex justify-between items-center mb-2">
-                <h4 className="font-bold">QUALIFICATION {index + 1}</h4>
+                <h4 className="font-bold">{t.qualificationLabel} {index + 1}</h4>
                 <button
                   onClick={() => deleteEntry(index)}
                   className="text-red-600 hover:text-red-700"
@@ -240,14 +245,14 @@ export default function Step3Education({ data, update, next, back }) {
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
-                <p><strong>Qualification:</strong> {q.qualification}</p>
-                <p><strong>Course:</strong> {q.course}</p>
-                <p><strong>Stream:</strong> {q.stream || "NA"}</p>
-                <p><strong>Board / University:</strong> {q.board}</p>
-                <p><strong>Institute:</strong> {q.institute}</p>
-                <p><strong>Year of Passing:</strong> {q.passingYear}</p>
-                <p><strong>Marks Type:</strong> {q.marksType}</p>
-                <p><strong>Score:</strong> {q.score}</p>
+                <p><strong>{t.qualification}:</strong> {q.qualification}</p>
+                <p><strong>{t.course}:</strong> {q.course}</p>
+                <p><strong>{t.stream}:</strong> {q.stream || "NA"}</p>
+                <p><strong>{t.board}:</strong> {q.board}</p>
+                <p><strong>{t.institute}:</strong> {q.institute}</p>
+                <p><strong>{t.passingYear}:</strong> {q.passingYear}</p>
+                <p><strong>{t.marksType}:</strong> {q.marksType}</p>
+                <p><strong>{t.score}:</strong> {q.score}</p>
               </div>
             </div>
           ))}
@@ -257,14 +262,14 @@ export default function Step3Education({ data, update, next, back }) {
       {/* BACK & NEXT */}
       <div className="flex justify-between mt-6">
         <button onClick={back} className="px-6 py-3 bg-gray-200 rounded-lg">
-          ← Back
+          ← {tCommon.back}
         </button>
 
         <button
           onClick={next}
           className="px-6 py-3 bg-blue-600 text-white rounded-lg"
         >
-          Save & Next →
+          {tCommon.save} & {tCommon.next} →
         </button>
       </div>
     </div>

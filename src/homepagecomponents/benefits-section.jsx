@@ -1,16 +1,22 @@
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations/translations';
+
 export default function BenefitsSection() {
+  const { language } = useLanguage();
+  const t = translations[language].benefits;
+
   const benefits = [
-    { icon: "💼", title: "12 months real-life experience", desc: "in India's top companies" },
-    { icon: "💵", title: "Monthly assistance of ₹4500", desc: "by Government of India and ₹500 by Industry" },
-    { icon: "💰", title: "One-time Grant of ₹6000", desc: "for incidentals" },
-    { icon: "🎯", title: "Select from Various Sectors", desc: "across different industries" },
+    { icon: "💼", title: t.benefit1Title, desc: t.benefit1Desc },
+    { icon: "💵", title: t.benefit2Title, desc: t.benefit2Desc },
+    { icon: "💰", title: t.benefit3Title, desc: t.benefit3Desc },
+    { icon: "🎯", title: t.benefit4Title, desc: t.benefit4Desc },
   ]
 
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-16">
-          Core Benefits for <span className="text-orange-500">PM Internship Scheme</span>
+          {t.heading} <span className="text-orange-500">{t.headingHighlight}</span>
         </h2>
 
         <div className="grid grid-cols-2 gap-8">

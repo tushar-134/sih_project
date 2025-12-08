@@ -1,25 +1,29 @@
 import { Link } from "react-router-dom";
-
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations/translations";
 
 export default function EventsGallery() {
+  const { language } = useLanguage();
+  const t = translations[language].eventsGallery;
+
   const events = [
     {
-      title: "PMIS North-East Roundtable",
-      desc: "Leaders, industry, and youth converge in Shillong to...",
-      date: "10th July, 2025",
-      location: "Shillong, Meghalya",
+      title: t.event1Title,
+      desc: t.event1Desc,
+      date: t.event1Date,
+      location: t.event1Location,
     },
     {
-      title: "Intern Interaction Event",
-      desc: "Meaningful moments in Dehradun– PMIS interns en...",
-      date: "17th June, 2025",
-      location: "Dehradun",
+      title: t.event2Title,
+      desc: t.event2Desc,
+      date: t.event2Date,
+      location: t.event2Location,
     },
     {
-      title: "PMIS Intern Connect",
-      desc: "Celebrating the spirit of learning, innovation, and yo...",
-      date: "20th June, 2025",
-      location: "Hyderabad",
+      title: t.event3Title,
+      desc: t.event3Desc,
+      date: t.event3Date,
+      location: t.event3Location,
     },
   ]
 
@@ -27,7 +31,7 @@ export default function EventsGallery() {
     <section id="gallery" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-16">
-          <span className="text-orange-500">—</span> Events Gallery <span className="text-orange-500">—</span>
+          <span className="text-orange-500">—</span> {t.title} <span className="text-orange-500">—</span>
         </h2>
 
         <div className="grid grid-cols-3 gap-8">
@@ -44,7 +48,7 @@ export default function EventsGallery() {
                   <p>{event.location}</p>
                 </div>
                 <button className="w-full text-center text-orange-500 font-bold hover:text-orange-600">
-                  View Event
+                  {t.viewEvent}
                 </button>
               </div>
             </div>

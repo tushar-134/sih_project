@@ -1,9 +1,14 @@
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations/translations";
+
 export default function PartnersSection() {
+  const { language } = useLanguage();
+  const t = translations[language].partnerSection;
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-16">
-          <span className="text-orange-500">—</span> Partners <span className="text-orange-500">—</span>
+          <span className="text-orange-500">—</span> {t.title} <span className="text-orange-500">—</span>
         </h2>
 
         <div className="flex justify-center items-center gap-12">

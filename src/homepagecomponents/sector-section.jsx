@@ -1,17 +1,22 @@
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations/translations";
+
 export default function SectorsSection() {
+  const { language } = useLanguage();
+  const t = translations[language].sectorSection;
+
   const sectors = [
-    { name: "Textile Manufacturing", img: "🏭" },
-    { name: "Travel & Hospitality", img: "🏨" },
-    { name: "Agriculture and allied", img: "🚜" },
-    { name: "Automotive", img: "🚗" },
+    { name: t.textile, img: "🏭" },
+    { name: t.travel, img: "🏨" },
+    { name: t.agriculture, img: "🚜" },
+    { name: t.automotive, img: "🚗" },
   ]
 
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-16">
-          <span className="text-orange-500">—</span> Explore Opportunities in various Sectors{" "}
-          <span className="text-orange-500">—</span>
+          <span className="text-orange-500">—</span> {t.title} <span className="text-orange-500">—</span>
         </h2>
 
         <div className="grid grid-cols-4 gap-6 mb-8">
@@ -27,7 +32,7 @@ export default function SectorsSection() {
 
         <div className="text-center">
           <button className="bg-orange-500 text-white px-8 py-3 rounded font-bold hover:bg-orange-600">
-            Show More
+            {t.showMore}
           </button>
         </div>
       </div>

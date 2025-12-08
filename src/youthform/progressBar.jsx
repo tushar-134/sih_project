@@ -1,15 +1,20 @@
 
 import React from "react";
 import { User, MapPin, GraduationCap, FileText, Zap, CheckCircle } from "lucide-react";
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations/translations";
 
 export default function ProgressBar({ step = 1 }) {
+  const { language } = useLanguage();
+  const t = translations[language].progressBar;
+
   const steps = [
-    { id: 1, label: "Personal", icon: User },
-    { id: 2, label: "Address", icon: MapPin },
-    { id: 3, label: "Education", icon: GraduationCap },
-    { id: 4, label: "Skills", icon: Zap },
-    { id: 5, label: "Documents", icon: FileText },
-    { id: 6, label: "Review", icon: CheckCircle }
+    { id: 1, label: t.personal, icon: User },
+    { id: 2, label: t.address, icon: MapPin },
+    { id: 3, label: t.education, icon: GraduationCap },
+    { id: 4, label: t.skills, icon: Zap },
+    { id: 5, label: t.documents, icon: FileText },
+    { id: 6, label: t.review, icon: CheckCircle }
   ];
 
   const percent = ((step - 1) / (steps.length - 1)) * 100;
@@ -20,7 +25,7 @@ export default function ProgressBar({ step = 1 }) {
       <div className="relative mb-8">
         {/* Background Line */}
         <div className="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 -translate-y-1/2 rounded-full" />
-        
+
         {/* Active Progress Line */}
         <div
           className="absolute top-1/2 left-0 h-1 bg-gradient-to-r from-orange-500 via-orange-400 to-orange-600 -translate-y-1/2 rounded-full transition-all duration-500 ease-out shadow-lg shadow-orange-300/50"
@@ -42,11 +47,11 @@ export default function ProgressBar({ step = 1 }) {
                   className={`
                     relative z-10 w-12 h-12 rounded-full flex items-center justify-center
                     transition-all duration-300 transform
-                    ${isCompleted 
-                      ? "bg-gradient-to-br from-orange-500 to-orange-600 text-white scale-100 shadow-lg shadow-orange-300/50" 
+                    ${isCompleted
+                      ? "bg-gradient-to-br from-orange-500 to-orange-600 text-white scale-100 shadow-lg shadow-orange-300/50"
                       : isCurrent
-                      ? "bg-white border-4 border-orange-500 text-orange-600 scale-110 shadow-xl animate-pulse"
-                      : "bg-white border-2 border-gray-300 text-gray-400 scale-90"
+                        ? "bg-white border-4 border-orange-500 text-orange-600 scale-110 shadow-xl animate-pulse"
+                        : "bg-white border-2 border-gray-300 text-gray-400 scale-90"
                     }
                   `}
                 >

@@ -1,6 +1,10 @@
 import React from 'react';
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations/translations";
 
 export default function PMFooter() {
+  const { language } = useLanguage();
+  const t = translations[language].footer;
   return (
     <footer id="support" className="bg-gray-900 text-white py-12">
       <div className="max-w-7xl mx-auto px-4">
@@ -15,7 +19,7 @@ export default function PMFooter() {
                 <span className="text-xs font-bold">BISAG-N</span>
               </div>
             </div>
-            <h3 className="font-bold mb-4">Social Media</h3>
+            <h3 className="font-bold mb-4">{t.socialMedia}</h3>
             <div className="flex gap-3">
               <button className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">📺</button>
               <button className="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center">📷</button>
@@ -26,36 +30,36 @@ export default function PMFooter() {
 
           {/* Get to Know */}
           <div>
-            <h3 className="font-bold mb-4">Get to Know</h3>
+            <h3 className="font-bold mb-4">{t.getToKnow}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <a href="#" className="hover:text-orange-500">
-                  Partner Companies
+                  {t.partnerCompanies}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-orange-500">
-                  Guidelines
+                  {t.guidelines}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-orange-500">
-                  FAQs
+                  {t.faqs}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-orange-500">
-                  Manuals
+                  {t.manuals}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-orange-500">
-                  Videos
+                  {t.videos}
                 </a>
               </li>
               <li>
                 <a href="#" className="hover:text-orange-500">
-                  Privacy Policy
+                  {t.privacyPolicy}
                 </a>
               </li>
             </ul>
@@ -63,17 +67,17 @@ export default function PMFooter() {
 
           {/* Contact Us */}
           <div>
-            <h3 className="font-bold mb-4">Contact Us</h3>
-            <p className="text-sm mb-4">A Wing, 5th Floor, Shastri Bhawan, Dr Rajendra Prasad Rd, New Delhi-110001</p>
+            <h3 className="font-bold mb-4">{t.contactUs}</h3>
+            <p className="text-sm mb-4">{t.address}</p>
             <p className="text-sm mb-2">pminternship[at]mca.gov.in</p>
             <p className="text-lg font-bold">1800 11 6090</p>
           </div>
 
           {/* Download App */}
           <div>
-            <h3 className="font-bold mb-4">Download Mobile App</h3>
+            <h3 className="font-bold mb-4">{t.downloadApp}</h3>
             <p className="text-sm mb-4">
-              Click the button below to download the app or scan the QR code with your phone.
+              {t.downloadAppDesc}
             </p>
             <button className="w-full bg-orange-500 text-white py-2 rounded font-semibold mb-2 hover:bg-orange-600">
               GET IT ON Google Play
@@ -86,7 +90,7 @@ export default function PMFooter() {
 
         {/* Bottom bar */}
         <div className="border-t border-gray-700 pt-8 flex justify-between items-center text-sm">
-          <p>&copy; 2025 PMIS. All rights reserved.</p>
+          <p>&copy; {t.copyright}</p>
           <p>Build Version: 1759578763123</p>
         </div>
       </div>

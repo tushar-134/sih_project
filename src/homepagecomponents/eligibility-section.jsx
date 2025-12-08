@@ -1,18 +1,23 @@
 import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations/translations';
 
 export default function EligibilitySection() {
+  const { language } = useLanguage();
+  const t = translations[language].eligibility;
+
   const criteria = [
-    { icon: "👤", title: "Age", desc: "21-24 Years" },
-    { icon: "💼", title: "Job Status", desc: "Not Employed Full Time" },
-    { icon: "🎓", title: "Education", desc: "Not Enrolled Full Time" },
-    { icon: "👨‍👩‍👧", title: "Family Income", desc: "No one earning >₹8L/yr" },
+    { icon: "👤", title: t.ageTitle, desc: t.ageDesc },
+    { icon: "💼", title: t.jobTitle, desc: t.jobDesc },
+    { icon: "🎓", title: t.educationTitle, desc: t.educationDesc },
+    { icon: "👨‍👩‍👧", title: t.incomeTitle, desc: t.incomeDesc },
   ]
 
   return (
     <section id="eligibility" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-16">
-          Are you <span className="text-orange-500">Eligible?</span>
+          {t.heading} <span className="text-orange-500">{t.headingHighlight}</span>
         </h2>
 
         <div className="grid grid-cols-4 gap-6">

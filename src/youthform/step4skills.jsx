@@ -1,7 +1,13 @@
+
 import React, { useState } from "react";
 import { Plus, X } from "lucide-react";
+import { useLanguage } from "../contexts/LanguageContext";
+import { translations } from "../translations/translations";
 
 export default function Step4Skills({ data, update, next, back }) {
+  const { language } = useLanguage();
+  const t = translations[language].step4Skills;
+  const tCommon = translations[language].youthForm;
   const [skill, setSkill] = useState("");
 
   const addSkill = () => {
@@ -18,7 +24,7 @@ export default function Step4Skills({ data, update, next, back }) {
 
   return (
     <div className="bg-white rounded-2xl p-6 shadow-md">
-      <h3 className="text-xl font-semibold mb-6">Skills</h3>
+      <h3 className="text-xl font-semibold mb-6">{t.title}</h3>
 
       {/* Input Section */}
       <div className="flex gap-3">
@@ -26,7 +32,7 @@ export default function Step4Skills({ data, update, next, back }) {
           type="text"
           value={skill}
           onChange={(e) => setSkill(e.target.value)}
-          placeholder="Add a skill (e.g., JavaScript, React, Python)"
+          placeholder={t.skillPlaceholder}
           className="w-full p-3 border rounded-lg outline-none"
         />
 
@@ -35,7 +41,7 @@ export default function Step4Skills({ data, update, next, back }) {
           className="bg-blue-600 text-white px-4 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition"
         >
           <Plus size={18} />
-          Add
+          {t.addButton}
         </button>
       </div>
 
@@ -57,7 +63,7 @@ export default function Step4Skills({ data, update, next, back }) {
             </div>
           ))
         ) : (
-          <p className="text-gray-500">No skills added yet.</p>
+          <p className="text-gray-500">{t.noSkills}</p>
         )}
       </div>
 
@@ -67,14 +73,14 @@ export default function Step4Skills({ data, update, next, back }) {
           onClick={back}
           className="bg-gray-200 px-6 py-3 rounded-lg hover:bg-gray-300"
         >
-          ← Back
+          ← {tCommon.back}
         </button>
 
         <button
           onClick={next}
           className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
         >
-          Save & Next →
+          {tCommon.save} & {tCommon.next} →
         </button>
       </div>
     </div>
